@@ -3,7 +3,11 @@
 namespace JGI\Fraktjakt;
 
 use GuzzleHttp\Client;
+use JGI\Fraktjakt\Provider\OrderProvider;
 
+/**
+ * @method OrderProvider orders()
+ */
 class Fraktjakt
 {
     private $client;
@@ -15,6 +19,9 @@ class Fraktjakt
 
     public function __call($name, $arguments)
     {
-        $a = 1;
+        $name = trim($name, 's');
+        $class = sprintf('JGI\\Fraktjakt\\Provider\\%sProvider', ucfirst($name));
+
+        return new $class($this->client);
     }
 }
