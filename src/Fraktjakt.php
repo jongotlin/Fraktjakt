@@ -3,7 +3,9 @@
 namespace JGI\Fraktjakt;
 
 use GuzzleHttp\Client;
+use JGI\Fraktjakt\DocumentGenerator\DocumentGeneratorInterface;
 use JGI\Fraktjakt\DocumentGenerator\OrderDocumentGenerator;
+use JGI\Fraktjakt\DocumentGenerator\ShipmentDocumentGenerator;
 use JGI\Fraktjakt\Provider\OrderProvider;
 
 /**
@@ -13,14 +15,21 @@ class Fraktjakt
 {
     private $client;
 
+    /**
+     * @var DocumentGeneratorInterface[]
+     */
     private $documentGenerators;
 
-    public function __construct(Client $client, iterable $documentGenerators = null)
+    private $credentials;
+
+    public function __construct(Client $client, Credentials $credentials, iterable $documentGenerators = null)
     {
         $this->client = $client;
+        $this->credentials = $credentials;
         if (is_null($documentGenerators)) {
             $documentGenerators = [
                 new OrderDocumentGenerator(),
+                new ShipmentDocumentGenerator(),
             ];
         }
         $this->documentGenerators = $documentGenerators;
