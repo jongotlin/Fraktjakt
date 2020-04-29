@@ -5,41 +5,36 @@ namespace JGI\Fraktjakt;
 use GuzzleHttp\Client;
 use JGI\Fraktjakt\DocumentGenerator\DocumentGeneratorInterface;
 use JGI\Fraktjakt\DocumentGenerator\OrderDocumentGenerator;
+use JGI\Fraktjakt\DocumentGenerator\OrderSpecificationGenerator;
 use JGI\Fraktjakt\DocumentGenerator\ShipmentDocumentGenerator;
 use JGI\Fraktjakt\Provider\OrderProvider;
+use JGI\Fraktjakt\Provider\OrderSpecificationProvider;
+use JGI\Fraktjakt\Provider\ShipmentProvider;
 
-/**
- * @method OrderProvider orders()
- */
 class Fraktjakt
 {
     private $client;
 
-    /**
-     * @var DocumentGeneratorInterface[]
-     */
-    private $documentGenerators;
-
     private $credentials;
 
-    public function __construct(Client $client, Credentials $credentials, iterable $documentGenerators = null)
+    public function __construct(Client $client, Credentials $credentials)
     {
         $this->client = $client;
         $this->credentials = $credentials;
-        if (is_null($documentGenerators)) {
-            $documentGenerators = [
-                new OrderDocumentGenerator(),
-                new ShipmentDocumentGenerator(),
-            ];
-        }
-        $this->documentGenerators = $documentGenerators;
     }
 
-    public function __call($name, $arguments)
+    public function orders()
     {
-        $name = trim($name, 's');
-        $class = sprintf('JGI\\Fraktjakt\\Provider\\%sProvider', ucfirst($name));
+        return new OrderProvider($this->client, new OrderDocumentGenerator(), $this->credentials);
+    }
 
-        return new $class($this->client, $this->documentGenerators);
+    public function shipments()
+    {
+        return new ShipmentProvider($this->client, new ShipmentDocumentGenerator(), $this->credentials);
+    }
+
+    public function orderSpecifications()
+    {
+        return new OrderSpecificationProvider($this->client, new OrderSpecificationGenerator(), $this->credentials);
     }
 }
