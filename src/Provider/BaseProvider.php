@@ -44,7 +44,11 @@ abstract class BaseProvider implements ProviderInterface
         $consignor->appendChild($fraktjaktDocument->createElement('api_version', '3.7.0'));
         $root->appendChild($consignor);
 
-        $request = new Request('POST', 'https://testapi.fraktjakt.se/orders/order_xml?xml=' . urlencode($fraktjaktDocument->saveXML()));
+        $url = 'https://api.fraktjakt.se/orders/order_xml?xml=';
+        if ($this->credentials->isTestEnvironment()) {
+            $url = 'https://testapi.fraktjakt.se/orders/order_xml?xml=';
+        }
+        $request = new Request('POST', $url . urlencode($fraktjaktDocument->saveXML()));
         //$request = new Request('POST', 'https://testapi.fraktjakt.se/fraktjakt/query_xml?xml=' . urlencode($fraktjaktDocument->saveXML()));
 
         $response = $this->client->send($request);

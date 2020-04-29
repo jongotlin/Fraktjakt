@@ -32,19 +32,33 @@ class Credentials
     private $apiVersion;
 
     /**
+     * @var bool
+     */
+    private $testEnvironment;
+
+    /**
      * @param string $consignorId
      * @param string $consignorKey
      * @param string $currency
      * @param string $language
      * @param string $apiVersion
+     * @param bool $testEnvironment
      */
-    public function __construct(string $consignorId, string $consignorKey, string $currency, string $language, string $apiVersion)
+    public function __construct(
+        string $consignorId,
+        string $consignorKey,
+        string $currency,
+        string $language,
+        string $apiVersion,
+        bool $testEnvironment
+    )
     {
         $this->consignorId = $consignorId;
         $this->consignorKey = $consignorKey;
         $this->currency = $currency;
         $this->language = $language;
         $this->apiVersion = $apiVersion;
+        $this->testEnvironment = $testEnvironment;
     }
 
     /**
@@ -85,5 +99,13 @@ class Credentials
     public function getApiVersion(): string
     {
         return $this->apiVersion;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTestEnvironment(): bool
+    {
+        return $this->testEnvironment;
     }
 }
