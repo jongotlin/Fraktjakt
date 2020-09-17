@@ -47,7 +47,11 @@ class OrderSpecificationGenerator implements DocumentGeneratorInterface
 
         $parcels = $fraktjaktDocument->createElement('parcels');
         $parcel = $fraktjaktDocument->createElement('parcel');
-        $parcel->appendChild($fraktjaktDocument->createElement('weight', $orderSpecification->getWeight() / 1000));
+        if ($orderSpecification->getWeight() < 500) {
+            $parcel->appendChild($fraktjaktDocument->createElement('weight', 1));
+        } else {
+            $parcel->appendChild($fraktjaktDocument->createElement('weight', $orderSpecification->getWeight() / 1000));
+        }
         $parcel->appendChild($fraktjaktDocument->createElement('length', 25));
         $parcel->appendChild($fraktjaktDocument->createElement('height', 15));
         $parcel->appendChild($fraktjaktDocument->createElement('width', 20));
