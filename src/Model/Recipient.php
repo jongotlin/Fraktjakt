@@ -12,6 +12,11 @@ class Recipient
     /**
      * @var string|null
      */
+    private $companyName;
+
+    /**
+     * @var string|null
+     */
     private $mobileNumber;
 
     /**
@@ -38,6 +43,22 @@ class Recipient
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * @param string|null $companyName
+     */
+    public function setCompanyName(?string $companyName): void
+    {
+        $this->companyName = $companyName;
     }
 
     /**

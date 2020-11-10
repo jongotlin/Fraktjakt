@@ -75,6 +75,7 @@ class OrderSpecificationGenerator implements DocumentGeneratorInterface
         $root->appendChild($addressTo);
 
         $recipient = $fraktjaktDocument->createElement('recipient');
+        $recipient->appendChild($fraktjaktDocument->createElement('company_to', $orderSpecification->getRecipient()->getCompanyName()));
         $recipient->appendChild($fraktjaktDocument->createElement('name_to', $orderSpecification->getRecipient()->getName()));
         $recipient->appendChild($fraktjaktDocument->createElement('mobile_to', $orderSpecification->getRecipient()->getMobileNumber()));
         $recipient->appendChild($fraktjaktDocument->createElement('telephone_to', $orderSpecification->getRecipient()->getPhoneNumber()));
